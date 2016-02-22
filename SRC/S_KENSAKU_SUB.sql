@@ -110,11 +110,14 @@ DECLARE @i int
 --//////////////////////////////////////////////////////////////////
 --ユーザ名を加工
 SET @WK_USER_NAME = '##' + REPLACE(LOWER ( system_user ),'\','_')
+SET @WK_USER_NAME =  REPLACE(@WK_USER_NAME,'-','')
 
 --システム日時を加工
-SET @WK_SYSTEM_DATE_TIME =  REPLACE( CONVERT(VARCHAR,GetDate(),126),'-','')
+SET @WK_SYSTEM_DATE_TIME =  REPLACE( CONVERT(VARCHAR,GetDate(),121) ,'-','')
 SET @WK_SYSTEM_DATE_TIME =  REPLACE(@WK_SYSTEM_DATE_TIME,':','')
+SET @WK_SYSTEM_DATE_TIME =  REPLACE(@WK_SYSTEM_DATE_TIME,' ','')
 SET @WK_SYSTEM_DATE_TIME =  REPLACE(@WK_SYSTEM_DATE_TIME,'.','')
+SET @WK_SYSTEM_DATE_TIME =  REPLACE(@WK_SYSTEM_DATE_TIME,'-','')
 
 --select @WK_SYSTEM_DATE_TIME
 
