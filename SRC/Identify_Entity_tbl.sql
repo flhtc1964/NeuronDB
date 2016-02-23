@@ -1,7 +1,7 @@
 USE [K-MEMO2]
 GO
 
-/****** Object:  Table [dbo].[Identify_Entity_tbl]    Script Date: 2015/10/10 7:58:45 ******/
+/****** Object:  Table [dbo].[Identify_Entity_tbl]    Script Date: 2016/02/23 21:20:01 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,14 +10,14 @@ GO
 
 CREATE TABLE [dbo].[Identify_Entity_tbl](
 	[主キー] [int] IDENTITY(1,1) NOT NULL,
-	[識別ID] [int] NOT NULL,
+	[識別ID] [int] NULL,
 	[G_識別ID] [int] NULL,
 	[T_ID] [int] NOT NULL,
 	[ソート] [int] NOT NULL,
 	[ユニット] [int] NOT NULL,
 	[F_ID] [int] NOT NULL,
 	[G_F_ID] [int] NULL,
-	[F_ID_WORDS] [nvarchar](2014) NOT NULL,
+	[F_ID_WORDS] [nvarchar](2014) NULL,
 	[D_ID] [int] NULL,
 	[G_D_ID] [int] NULL,
 	[D_ID_WORDS] [nvarchar](2014) NULL,
@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[Identify_Entity_tbl](
 	[G_識別IDリンク先] [int] NULL,
 	[識別IDリンク先使用数] [int] NULL,
 	[G_識別IDリンク先使用数] [int] NULL,
-PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK__Identify__4DB8E8D4D71E47BD] PRIMARY KEY CLUSTERED 
 (
 	[主キー] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
