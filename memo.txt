@@ -1,1 +1,5 @@
+2016-02-24	Identify_Entity_tbl内の以下の項目をNULLに変更。こうしないと「識別ID」取得作業が出来ない
+		それと、ID番号だけで運用する場合は「D_ID_WORDS」を空白許可にしないといけないので。
+		[識別ID] [int] NULL	[D_ID_WORDS] [nvarchar](2014) NULL
+
 2015-09-25	GitHub
