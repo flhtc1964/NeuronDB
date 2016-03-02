@@ -1,7 +1,7 @@
-﻿USE [K-MEMO2]
+USE [K-MEMO2]
 GO
 
-/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2015/10/10 7:57:36 ******/
+/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/03/03 8:50:39 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -273,7 +273,9 @@ END
 
 if right(ISNULL( @WK_SQL_SUB , '' ),9) = 'intersect' 
 BEGIN
-		SET @WK_SQL = @WK_SQL + ' and [識別ID] IN  ( ' + substring(@WK_SQL_SUB,1,len(@WK_SQL_SUB)-9) + ')'
+		--ここは、間違えて苦労した・・
+		--SET @WK_SQL = @WK_SQL + ' and [識別ID] IN  ( ' + substring(@WK_SQL_SUB,1,len(@WK_SQL_SUB)-9) + ')'
+		SET @WK_SQL = @WK_SQL + substring(@WK_SQL_SUB,1,len(@WK_SQL_SUB)-9) 
 END
 
 
