@@ -1,5 +1,5 @@
 '==================================
-' Please Rename. This faile Name
+' Please Rename. This faile Name.
 '
 ' MK_K-MEMO2.VBS.TXT ==> MK_K-MEMO2.VBS
 '
@@ -10,7 +10,7 @@
 '==================================
 
 '新規DBログイン資格
-WK_TO_SERV = "SQL-DB1"
+WK_TO_SERV = ""
 WK_TO_DB = "K-MEMO2"
 WK_TO_UID = "sa"
 WK_TO_PW = ""
@@ -31,6 +31,8 @@ Dim D_08(1000)
 Dim D_09(1000)
 
 WScript.Echo "使用するデータベースで「ログインを許可する」がONになっていないと、ログインエラーになります"
+
+WK_TO_SERV = inputbox("サーバ名を入力してください","サーバ名の入力")
 
 WScript.Echo "今から　SQL Server【" & WK_TO_SERV & "】内に　データベース名【" & WK_TO_DB & "】に基本テーブル２個を自動作成します"
 
