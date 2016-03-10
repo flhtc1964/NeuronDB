@@ -1,12 +1,13 @@
 USE [K-MEMO2]
 GO
 
-/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/03/03 8:50:39 ******/
+/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/03/10 9:56:02 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -19,6 +20,7 @@ GO
 CREATE  PROCEDURE [dbo].[S_KENSAKU_SUB]
 	@P1 as int 
 	,@P2 as int
+	,@P3 as  nvarchar(500)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -92,7 +94,7 @@ DECLARE @WK_CR2_R_SU int
 DECLARE @WK_CR2_R_MAX int
 
 --初期作成デフォルト列数
-SET @WK_CR1_R_MAX = 100
+SET @WK_CR1_R_MAX = 150
 
 
 --ログオンユーザー名
@@ -273,8 +275,7 @@ END
 
 if right(ISNULL( @WK_SQL_SUB , '' ),9) = 'intersect' 
 BEGIN
-		--ここは、間違えて苦労した・・
-		--SET @WK_SQL = @WK_SQL + ' and [識別ID] IN  ( ' + substring(@WK_SQL_SUB,1,len(@WK_SQL_SUB)-9) + ')'
+		-- SET @WK_SQL = @WK_SQL + ' and [識別ID] IN  ( ' + substring(@WK_SQL_SUB,1,len(@WK_SQL_SUB)-9) + ')'
 		SET @WK_SQL = @WK_SQL + substring(@WK_SQL_SUB,1,len(@WK_SQL_SUB)-9) 
 END
 
@@ -307,7 +308,7 @@ END
 	--------------------------
 	BEGIN
 	--
-	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ')  ORDER BY [識別ID] ,[ソート]'
+	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ' )   and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] ,[ソート]'
 
 	--select @WK_SQL
 
@@ -611,6 +612,7 @@ END
 
 ---------------------------------------------------------
 END
+
 
 
 
