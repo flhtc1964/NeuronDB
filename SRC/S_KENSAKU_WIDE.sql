@@ -1,7 +1,7 @@
 USE [K-MEMO2]
 GO
 
-/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/04/08 9:31:11 ******/
+/****** Object:  StoredProcedure [dbo].[S_KENSAKU_WIDE]    Script Date: 2016/04/08 9:31:22 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,12 +12,15 @@ GO
 
 
 
+
+
+
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE  PROCEDURE [dbo].[S_KENSAKU_SUB]
+CREATE  PROCEDURE [dbo].[S_KENSAKU_WIDE]
 	@P1 as int 
 	,@P2 as int
 	,@P3 as  nvarchar(500)
@@ -36,25 +39,6 @@ BEGIN
 -- F_ID のみを指定したら表示列として絞り込めます。
 --
 --////////////////////////////////////////////////////////
-
-
-DECLARE @P3_2 nvarchar(500)
-
-if charindex(',',ISNULL(@P3,'')) > 0
-BEGIN
-
-SET @P3_2 = '%' + SUBSTRING(@P3,charindex(',',ISNULL(@P3,''))+1,LEN(@P3)-charindex(',',ISNULL(@P3,''))) + '%'
-SET @P3 = SUBSTRING(@P3,0,charindex(',',ISNULL(@P3,'')))
-
-END
-else
-BEGIN
-SET @P3_2 = '%'
-END
-
---select @P3,@P3_2
-
-
 DECLARE @WK_CHECK int
 
 --カーソル用
@@ -84,6 +68,13 @@ DECLARE @WK_SQL2 nvarchar(max)
 DECLARE @WK_SQL3 nvarchar(max) 
 DECLARE @WK_SQL4 nvarchar(max) 
 DECLARE @WK_SQL5 nvarchar(max) 
+DECLARE @WK_SQL6 nvarchar(max) 
+DECLARE @WK_SQL7 nvarchar(max) 
+
+DECLARE @WK_SQL8 nvarchar(max) 
+DECLARE @WK_SQL8_2 nvarchar(max) 
+
+DECLARE @WK_SQL9 nvarchar(max) 
 
 DECLARE @WK_SQL_IN nvarchar(4000) 
 DECLARE @WK_SQL_IN_FLG int
@@ -110,6 +101,9 @@ DECLARE @WK_CR1_R_MAX int
 --カーソル2で使用
 DECLARE @WK_CR2_R_NO int
 DECLARE @WK_CR2_R_SU int
+
+DECLARE @WK_CR2_R_SU_SAIDAI int
+
 DECLARE @WK_CR2_R_MAX int
 
 --初期作成デフォルト列数
@@ -326,38 +320,38 @@ END
 	else if @P1 = @P2
 	--------------------------
 	BEGIN
-
-
 	--
-	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ' )   and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] , [T_ID] , [ソート]'
+	--SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ' )   and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] ,[ソート]'
+
+	if @P1 < 1000
+	BEGIN
+	--識別ID　降順  @P1 = 903, P2 = 903 と、ストアド番号を指定
+	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] DESC , [T_ID] , [ソート] '
+
+	END
+	else
+	BEGIN
+
+	--識別名を絞り込む場合　@P1 = 識別名　, P2 = 同じ識別目　
+	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000)and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ' )  and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] DESC , [T_ID] , [ソート]'
+
+
+	END
+
+
 
 	--select @WK_SQL
+
 	END
-
-
+	--------------------------
+	else
 	--------------------------
 
-	else if @P1 < 1000
-
-	BEGIN
-		if len(ISNULL(@P3_2,'')) > 0 
-		BEGIN
-		--◆引数有◆　識別ID　降順  @P1 = 識別ID　, P2 = 901 と、ストアド番号を指定
-		SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P2 as nvarchar(50)) + ' ) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''' + cast(@P3_2 as nvarchar(500)) + ''' and [ユニット] = ''' + cast(@P3 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2) and [ユニット] = ''' + cast(@P3 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2 ORDER BY [識別ID],[T_ID],[ソート]'
-		END
-		else
-		BEGIN
-		--◆引数無し◆　識別ID　降順  @P1 = 識別ID　, P2 = 901 と、ストアド番号を指定
-		SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P2 as nvarchar(50)) + ' )  and [ユニット] = ''' + cast(@P3 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2 ORDER BY [識別ID],[T_ID],[ソート]'
-
-		END
-	END
-
-	else
-
 	BEGIN
 
-		SET @WK_SQL = 'SELECT * From dbo.Identify_Entity_tbl Where [識別ID] = ' + cast(@P1 as nvarchar(50)) + ' ORDER BY [識別ID],[T_ID],[ソート]'
+		SET @WK_SQL = 'SELECT * From dbo.Identify_Entity_tbl Where [識別ID] = ' + cast(@P1 as nvarchar(50)) + ' ORDER BY [識別ID] , [T_ID] , [ソート]'
+
+		
 
 	END
 
@@ -459,7 +453,14 @@ EXECUTE ( 'DECLARE csr_2 CURSOR SCROLL DYNAMIC FOR ' + @WK_SQL )
 --カーソル2用
 SET @WK_CR2_R_NO = 0
 SET @WK_CR2_R_SU = 0
+
+SET @WK_CR2_R_SU_SAIDAI = 0
+
 SET @WK_CR2_R_MAX = 0
+
+
+SET @WK_SQL8_2 = ''
+
 
 /* カーソルOPEN */
 OPEN csr_2
@@ -469,28 +470,38 @@ FETCH NEXT FROM csr_2 INTO  @W_主キー , @W_識別ID , @W_G_識別ID , @W_T_ID
 
 
 /* ループ処理（全レコードの検索が完了するまで） */
-WHILE (@@fetch_status =0)
+WHILE (@@fetch_status = 0)
 --◆◆
 BEGIN
 
 
+--◆
+       --  前回の識別IDと今回読み込んだ識別IDが違い、　列が１個目以上
 	if @WK_CR2_R_NO <> @W_識別ID and @WK_CR2_R_SU > 0
 	BEGIN
 
+		--「項目列」部分
+		SET @WK_SQL7 = left(@WK_SQL5,len(@WK_SQL5) - 1) + ') '
+
+		--「データ」部分
+		SET @WK_SQL8 = @WK_SQL7 + left(@WK_SQL6,len(@WK_SQL6) - 1) + ')'
 
 
+		--select substring(@WK_SQL8_2,charindex(',N',@WK_SQL8_2),len(@WK_SQL8_2)-charindex(',N',@WK_SQL8_2)),substring(@WK_SQL8,charindex(',N',@WK_SQL8),len(@WK_SQL8)-charindex(',N',@WK_SQL8))
 
+		if  substring(@WK_SQL8_2,charindex(',N',@WK_SQL8_2),len(@WK_SQL8_2)-charindex(',N',@WK_SQL8_2)) <> substring(@WK_SQL8,charindex(',N',@WK_SQL8),len(@WK_SQL8)-charindex(',N',@WK_SQL8))
+			BEGIN
 
 			------------------------------------------------------------
 			--既定の列数（ @WK_CR1_R_MAX ）より多いなら、列を追加する
 			------------------------------------------------------------
 
-			if @WK_CR2_R_SU > @WK_CR1_R_MAX
+			if @WK_CR2_R_SU_SAIDAI > @WK_CR1_R_MAX
 				BEGIN
 
 					SET @i = @WK_CR1_R_MAX + 1
 
-					WHILE @i < @WK_CR2_R_SU + 1
+					WHILE @i < @WK_CR2_R_SU_SAIDAI + 1
 						BEGIN
 						SET @WK_SQL2 = 'ALTER TABLE ' + @WK_SAGYOU_TBL + ' ADD '
 						SET @WK_SQL2 = @WK_SQL2 +  '[MID' + cast(@i as nvarchar(50))  + '] [int] NULL,'	
@@ -504,35 +515,56 @@ BEGIN
 
 						END
 
-					SET @WK_CR1_R_MAX = @WK_CR2_R_SU 
+					SET @WK_CR1_R_MAX = @WK_CR2_R_SU_SAIDAI 
 
 				END
 			------------------------------------------------------------
 
 
+			--列レコードの追加
+			EXECUTE ( @WK_SQL8 )
+
+			--列名が同一化どうかチェックし、前回と同じなら列名は追加しない
+			SET @WK_SQL8_2 = @WK_SQL8
+
+			END
 
 
 
 
 
-		SET @WK_SQL5 = left(@WK_SQL3,len(@WK_SQL3) - 1) + ') '
-		SET @WK_SQL5 = @WK_SQL5 + left(@WK_SQL4,len(@WK_SQL4) - 1) + ')'
 
-		EXECUTE ( @WK_SQL5 )
-		
-		--select @WK_SQL5
+		SET @WK_SQL9 = left(@WK_SQL3,len(@WK_SQL3) - 1) + ') '
+		SET @WK_SQL9 = @WK_SQL9 + left(@WK_SQL4,len(@WK_SQL4) - 1) + ')'
+
+				--データレコードの追加
+				EXECUTE ( @WK_SQL9 )
+
+
+
+		--最高列数をカウント
+		if @WK_CR2_R_SU > @WK_CR2_R_SU_SAIDAI 
+		BEGIN
+			SET @WK_CR2_R_SU_SAIDAI = @WK_CR2_R_SU 
+		END
+
 
 		SET @WK_CR2_R_SU = 0
 
 
 	END
-
+--◆
 
 
 	if @WK_CR2_R_SU = 0
 	BEGIN
 		SET @WK_SQL3 = 'insert into [dbo].[' + @WK_SAGYOU_TBL + '] ( ' + '[識別ID],'
 		SET @WK_SQL4 = ' values( ' + cast(@W_識別ID as nvarchar(50)) + ','
+		
+		
+		SET @WK_SQL5 = 'insert into [dbo].[' + @WK_SAGYOU_TBL + '] ( ' + '[識別ID],'
+		SET @WK_SQL6 = ' values( ' + cast(@W_識別ID as nvarchar(50)) + ','
+		
 	END
 
 
@@ -551,6 +583,22 @@ BEGIN
 
 	SET @WK_SQL4 = @WK_SQL4 + cast(@W_主キー as nvarchar(50)) + ',' + 'N' + CHAR(39) + ISNULL(@W_D_ID_WORDS,'') + CHAR(39) + ','
 	--END
+
+
+
+
+
+
+	--「項目列」のみ
+	SET @WK_SQL5 = @WK_SQL5 + '[MDT' + cast(@WK_CR2_R_SU as nvarchar(50)) + '],'
+
+	SET @W_F_ID_WORDS = (select WORDS from dbo.Word_Entity_tbl where ID = @W_F_ID )
+
+	SET @WK_SQL6 = @WK_SQL6 + 'N' + CHAR(39) + ISNULL(@W_F_ID_WORDS,'') + CHAR(39) + ','
+
+
+
+	--select @WK_CR2_R_SU , @WK_CR1_R_MAX 
 
 
 
@@ -575,17 +623,79 @@ END
 	if @WK_CR2_R_SU > 0 
 		BEGIN
 
-		SET @WK_SQL5 = left(@WK_SQL3,len(@WK_SQL3) - 1) + ') '
-		SET @WK_SQL5 = @WK_SQL5 + left(@WK_SQL4,len(@WK_SQL4) - 1) + ')'
+		--「項目列」部分
+		SET @WK_SQL7 = left(@WK_SQL5,len(@WK_SQL5) - 1) + ') '
 
-		EXECUTE ( @WK_SQL5 )
-		
-		--select @WK_SQL5
+		--「データ」部分
+		SET @WK_SQL8 = @WK_SQL7 + left(@WK_SQL6,len(@WK_SQL6) - 1) + ')'
 
-		--SET @WK_CR2_R_SU = 0
+
+
+		if  substring(@WK_SQL8_2,charindex(',N',@WK_SQL8_2),len(@WK_SQL8_2)-charindex(',N',@WK_SQL8_2)) <> substring(@WK_SQL8,charindex(',N',@WK_SQL8),len(@WK_SQL8)-charindex(',N',@WK_SQL8))
+			BEGIN
+
+			------------------------------------------------------------
+			--既定の列数（ @WK_CR1_R_MAX ）より多いなら、列を追加する
+			------------------------------------------------------------
+
+
+
+
+			if @WK_CR2_R_SU_SAIDAI > @WK_CR1_R_MAX
+				BEGIN
+
+					SET @i = @WK_CR1_R_MAX + 1
+
+					WHILE @i < @WK_CR2_R_SU_SAIDAI + 1
+						BEGIN
+						SET @WK_SQL2 = 'ALTER TABLE ' + @WK_SAGYOU_TBL + ' ADD '
+						SET @WK_SQL2 = @WK_SQL2 +  '[MID' + cast(@i as nvarchar(50))  + '] [int] NULL,'	
+						SET @WK_SQL2 = @WK_SQL2 +  '[MDT' + cast(@i as nvarchar(50))  + '] [nvarchar] (2014) COLLATE Japanese_CI_AS NULL '	
+
+						--select @WK_SQL2
+
+						EXECUTE ( @WK_SQL2 )
+
+						SET @i = @i + 1
+
+						END
+
+					SET @WK_CR1_R_MAX = @WK_CR2_R_SU_SAIDAI 
+
+
+
+				END
+			------------------------------------------------------------
+
+
+			--列レコードの追加
+			EXECUTE ( @WK_SQL8 )
+
+
+			END
+
+
+			--列名が同一化どうかチェックし、前回と同じなら列名は追加しない
+			SET @WK_SQL8_2 = @WK_SQL7
+
+
+
+		SET @WK_SQL9 = left(@WK_SQL3,len(@WK_SQL3) - 1) + ') '
+		SET @WK_SQL9 = @WK_SQL9 + left(@WK_SQL4,len(@WK_SQL4) - 1) + ')'
+
+				--データレコードの追加
+				EXECUTE ( @WK_SQL9 )
+
 
 		END
 
+				--select @WK_CR2_R_SU, @WK_CR2_R_SU_SAIDAI , @WK_CR1_R_MAX
+
+				--該当データが1行だけなら
+				if @WK_CR2_R_SU_SAIDAI < @WK_CR2_R_SU
+				BEGIN
+					SET @WK_CR2_R_SU_SAIDAI = @WK_CR2_R_SU
+				END
 
 
 
@@ -595,10 +705,10 @@ END
 			------------------------------------------------------------
 			--既定の列数（ @WK_CR1_R_MAX ）よりデータが少ないなら、列を削除する
 			------------------------------------------------------------
-			if @WK_CR1_R_MAX > @WK_CR2_R_SU
+			if @WK_CR1_R_MAX > @WK_CR2_R_SU_SAIDAI
 				BEGIN
 
-					SET @i = @WK_CR2_R_SU + 1
+					SET @i = @WK_CR2_R_SU_SAIDAI + 1
 
 					WHILE @i < @WK_CR1_R_MAX + 1
 						BEGIN
@@ -613,8 +723,6 @@ END
 						SET @i = @i + 1
 
 						END
-
-					SET @WK_CR1_R_MAX = @WK_CR2_R_SU 
 
 				END
 
@@ -637,64 +745,10 @@ END
 CLOSE csr_2
 DEALLOCATE csr_2
 
-if @P1 < 1000
-BEGIN
-
-
-
-
-	SET @i = 1
-
-	WHILE @i < @WK_CR2_R_SU + 1
-		BEGIN
-		SET @WK_SQL2 = 'ALTER TABLE ' + @WK_SAGYOU_TBL + ' DROP COLUMN '
-		SET @WK_SQL2 = @WK_SQL2 +  '[MID' + cast(@i as nvarchar(50))  + '] '
-
-		--select @WK_SQL2
-
-		EXECUTE ( @WK_SQL2 )
-
-		SET  @WK_SQL5 = REPLACE(@WK_SQL5, '[MID' + cast(@i as nvarchar(50)) + '],' ,'')
-		SET  @WK_SQL5 = REPLACE(@WK_SQL5, '[MID' + cast(@i as nvarchar(50)) + ']' ,'')
-
-		SET @i = @i + 1
-
-		END
-
-
-
-
---select @WK_SQL5
-
-DECLARE @W_SUBST_START int
-DECLARE @W_SUBST_END int
-
-
-
-SET @W_SUBST_START =charindex('( [識別ID],',@WK_SQL5) + 9
-SET @W_SUBST_END = charindex(')  values(', @WK_SQL5) - @W_SUBST_START
-
---select @W_SUBST_START,@W_SUBST_END
-
-	SET @WK_SQL = 'select ' + substring(@WK_SQL5,@W_SUBST_START,@W_SUBST_END) + ' , count([識別ID]) as '+ CHAR(39)  + '使用回数' + CHAR(39) 
-	SET @WK_SQL = @WK_SQL + ' from [dbo].[' + @WK_SAGYOU_TBL + '] '	
-	SET @WK_SQL = @WK_SQL + ' GROUP BY ' + substring(@WK_SQL5,@W_SUBST_START,@W_SUBST_END)
-	SET @WK_SQL = @WK_SQL + ' ORDER BY count([識別ID]) DESC '
-
-	--select  @WK_SQL
-
-	EXEC sp_executesql @WK_SQL
-
-END
-
-else
-
-BEGIN
-
 SET @WK_SQL = 'select * from [dbo].[' + @WK_SAGYOU_TBL + ']' 
+
 EXEC sp_executesql @WK_SQL
 
-END
 
 --SET @WK_SQL = 'drop table [dbo].[' + @WK_SAGYOU_TBL + ']'
 
