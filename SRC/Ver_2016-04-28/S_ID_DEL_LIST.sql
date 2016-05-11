@@ -1,4 +1,4 @@
-USE [K-MEMO2]
+USE [K-MEMO]
 GO
 
 /****** Object:  StoredProcedure [dbo].[S_ID_DEL_LIST]    Script Date: 2016/03/09 10:16:59 ******/

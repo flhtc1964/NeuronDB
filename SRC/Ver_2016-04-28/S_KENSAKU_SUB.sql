@@ -1,12 +1,13 @@
-USE [K-MEMO2]
+USE [K-MEMO]
 GO
 
-/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/04/08 9:31:11 ******/
+/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/05/10 12:19:27 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -38,21 +39,30 @@ BEGIN
 --////////////////////////////////////////////////////////
 
 
-DECLARE @P3_2 nvarchar(500)
 
+
+DECLARE @P3_1 nvarchar(500)  --FLG
+DECLARE @P3_2 nvarchar(500)  --ユニット番号等
+DECLARE @P3_3 nvarchar(500)  --検索文字
+
+--検索文字の有無で判定
 if charindex(',',ISNULL(@P3,'')) > 0
 BEGIN
+--            `P3_1:@P3_2.@P3_3
+-- @P3　→　 "FLG番号:ユニット番号等,検索文字"
 
-SET @P3_2 = '%' + SUBSTRING(@P3,charindex(',',ISNULL(@P3,''))+1,LEN(@P3)-charindex(',',ISNULL(@P3,''))) + '%'
-SET @P3 = SUBSTRING(@P3,0,charindex(',',ISNULL(@P3,'')))
-
+SET @P3_1 =       SUBSTRING(@P3,0,charindex(':',ISNULL(@P3,'')))
+SET @P3_2 =       SUBSTRING(@P3,charindex(':',ISNULL(@P3,''))+1,charindex(',',ISNULL(@P3,''))-charindex(':',ISNULL(@P3,''))-1)
+SET @P3_3 = '%' + SUBSTRING(@P3,charindex(',',ISNULL(@P3,''))+1,LEN(@P3)-charindex(',',ISNULL(@P3,''))) + '%'
 END
 else
 BEGIN
-SET @P3_2 = '%'
+SET @P3_1 =       SUBSTRING(@P3,0,charindex(':',ISNULL(@P3,'')))
+SET @P3_2 =       SUBSTRING(@P3,charindex(':',ISNULL(@P3,''))+1,LEN(@P3)-charindex(':',ISNULL(@P3,'')))
+SET @P3_3 = '%'
 END
 
---select @P3,@P3_2
+--select @P3,@P3_1,@P3_2,@P3_3
 
 
 DECLARE @WK_CHECK int
@@ -165,8 +175,8 @@ BEGIN
 		SET @WK_SQL = @WK_SQL + ', dbo.Identify_Entity_tbl.ソート '
 		SET @WK_SQL = @WK_SQL + ', dbo.Identify_Entity_tbl.ユニット '
 		SET @WK_SQL = @WK_SQL + ', dbo.Identify_Entity_tbl.F_ID '
-		SET @WK_SQL = @WK_SQL + ', dbo.Word_Entity_tbl.WORDS AS F_ID_WORDS '
 		SET @WK_SQL = @WK_SQL + ', dbo.Identify_Entity_tbl.G_F_ID '
+		SET @WK_SQL = @WK_SQL + ', dbo.Word_Entity_tbl.WORDS AS F_ID_WORDS '
 		SET @WK_SQL = @WK_SQL + ', dbo.Identify_Entity_tbl.D_ID '
 		SET @WK_SQL = @WK_SQL + ', dbo.Identify_Entity_tbl.G_D_ID '
 		SET @WK_SQL = @WK_SQL + ', Word_Entity_tbl_1.WORDS AS D_ID_WORDS '
@@ -329,7 +339,7 @@ END
 
 
 	--
-	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ' )   and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] , [T_ID] , [ソート]'
+	SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P1 as nvarchar(50)) + ' )   and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''%' + cast(@P3_3 as nvarchar(500)) + '%'')  ORDER BY [識別ID] , [T_ID] , [ソート]'
 
 	--select @WK_SQL
 	END
@@ -340,15 +350,15 @@ END
 	else if @P1 < 1000
 
 	BEGIN
-		if len(ISNULL(@P3_2,'')) > 0 
+		if len(ISNULL(@P3_3,'')) > 0 
 		BEGIN
 		--◆引数有◆　識別ID　降順  @P1 = 識別ID　, P2 = 901 と、ストアド番号を指定
-		SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P2 as nvarchar(50)) + ' ) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''' + cast(@P3_2 as nvarchar(500)) + ''' and [ユニット] = ''' + cast(@P3 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2) and [ユニット] = ''' + cast(@P3 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2 ORDER BY [識別ID],[T_ID],[ソート]'
+		SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P2 as nvarchar(50)) + ' ) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where [D_ID_WORDS] like ''' + cast(@P3_3 as nvarchar(500)) + ''' and [ユニット] = ''' + cast(@P3_2 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2) and [ユニット] = ''' + cast(@P3_2 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2 ORDER BY [識別ID],[T_ID],[ソート]'
 		END
 		else
 		BEGIN
 		--◆引数無し◆　識別ID　降順  @P1 = 識別ID　, P2 = 901 と、ストアド番号を指定
-		SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P2 as nvarchar(50)) + ' )  and [ユニット] = ''' + cast(@P3 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2 ORDER BY [識別ID],[T_ID],[ソート]'
+		SET @WK_SQL = 'SELECT dbo.Identify_Entity_tbl.* From dbo.Identify_Entity_tbl Where [識別ID] NOT IN (SELECT [識別ID] FROM [dbo].[Identify_Entity_tbl]  WHERE F_ID = 4 and D_ID < 1000) and [識別ID] IN  ( select [識別ID] from dbo.Identify_Entity_tbl where F_ID = 4 and D_ID = ' + cast(@P2 as nvarchar(50)) + ' )  and [ユニット] = ''' + cast(@P3_2 as nvarchar(500)) + ''' and ISNULL([T_ID],0) = 2 ORDER BY [識別ID],[T_ID],[ソート]'
 
 		END
 	END

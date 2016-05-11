@@ -1,7 +1,7 @@
 USE [K-MEMO2]
 GO
 
-/****** Object:  Table [dbo].[Identify_Entity_tbl]    Script Date: 2016/02/23 21:20:01 ******/
+/****** Object:  Table [dbo].[Identify_Entity_tbl]    Script Date: 2016/03/07 15:13:10 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -159,21 +159,39 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_ColumnWidth', @value=-1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'G_識別IDリンク先'
 GO
 
+EXEC sys.sp_addextendedproperty @name=N'MS_ColumnHidden', @value=0 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'識別IDリンク先使用数'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_ColumnOrder', @value=0 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'識別IDリンク先使用数'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_ColumnWidth', @value=-1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'識別IDリンク先使用数'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_ColumnHidden', @value=0 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'G_識別IDリンク先使用数'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_ColumnOrder', @value=0 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'G_識別IDリンク先使用数'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_ColumnWidth', @value=-1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl', @level2type=N'COLUMN',@level2name=N'G_識別IDリンク先使用数'
+GO
+
 EXEC sys.sp_addextendedproperty @name=N'MS_DefaultView', @value=0x02 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Filter', @value=NULL , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_OrderBy', @value=NULL , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
+EXEC sys.sp_addextendedproperty @name=N'MS_OrderBy', @value=N'Identify_Entity_tbl.主キー' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_OrderByOn', @value=0 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
+EXEC sys.sp_addextendedproperty @name=N'MS_OrderByOn', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Orientation', @value=0x00 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_TableMaxRecords', @value=10000 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
+EXEC sys.sp_addextendedproperty @name=N'MS_TableMaxRecords', @value=20300 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Identify_Entity_tbl'
 GO
 

@@ -1,7 +1,7 @@
 USE [K-MEMO2]
 GO
 
-/****** Object:  Table [dbo].[Word_Entity_tbl]    Script Date: 2015/10/10 7:59:22 ******/
+/****** Object:  Table [dbo].[Word_Entity_tbl]    Script Date: 2016/03/07 15:13:24 ******/
 SET ANSI_NULLS ON
 GO
 

@@ -1,17 +1,17 @@
 '==================================
 ' Please Rename. This faile Name.
 '
-' MK_K-MEMO2.VBS.TXT ==> MK_K-MEMO2.VBS
+' MK_K-MEMO.VBS.TXT ==> MK_K-MEMO.VBS
 '
-'MAKE K-MEMO2 DB
-' 2016-03-07 
+'MAKE K-MEMO DB
+' 2016-05-11 
 'By SKojima@kuhen.jp
 
 '==================================
 
 '新規DBログイン資格
 WK_TO_SERV = ""
-WK_TO_DB = "K-MEMO2"
+WK_TO_DB = "K-MEMO"
 WK_TO_UID = "sa"
 WK_TO_PW = ""
 
@@ -214,6 +214,20 @@ WK_MK_MAX = 999
 for j = WK_MK_I to WK_MK_MAX
 
 			WK_MK_WORDS = "システム予約" & right("000" & Cstr(j),3)
+			
+			
+			if j = 900 then
+				WK_MK_WORDS = "S_KENSAKU_MAIN"
+			end if
+
+			
+			if j = 901 then
+				WK_MK_WORDS = "S_KENSAKU_SUB"
+			end if
+			
+			if j = 902 then
+				WK_MK_WORDS = "S_KENSAKU_WIDE"
+			end if
 
 			WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
 
