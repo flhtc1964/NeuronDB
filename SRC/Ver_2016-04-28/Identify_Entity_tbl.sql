@@ -1,4 +1,4 @@
-USE [K-MEMO2]
+USE [K-MEMO]
 GO
 
 /****** Object:  Table [dbo].[Identify_Entity_tbl]    Script Date: 2016/03/07 15:13:10 ******/
