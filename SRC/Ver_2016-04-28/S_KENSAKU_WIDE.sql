@@ -1,12 +1,13 @@
 USE [K-MEMO]
 GO
 
-/****** Object:  StoredProcedure [dbo].[S_KENSAKU_WIDE]    Script Date: 2016/05/10 12:19:42 ******/
+/****** Object:  StoredProcedure [dbo].[S_KENSAKU_WIDE]    Script Date: 2016/05/13 9:32:43 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -157,7 +158,7 @@ DECLARE @i int
 
 --//////////////////////////////////////////////////////////////////
 --ユーザ名を加工
-SET @WK_USER_NAME = '##' + REPLACE(LOWER ( system_user ),'\','_')
+SET @WK_USER_NAME =  REPLACE(LOWER ( system_user ),'\','_')
 SET @WK_USER_NAME =  REPLACE(@WK_USER_NAME,'-','')
 
 --システム日時を加工
@@ -783,14 +784,15 @@ SET @WK_SQL = 'select * from [dbo].[' + @WK_SAGYOU_TBL + ']'
 EXEC sp_executesql @WK_SQL
 
 
---SET @WK_SQL = 'drop table [dbo].[' + @WK_SAGYOU_TBL + ']'
+SET @WK_SQL = 'drop table [dbo].[' + @WK_SAGYOU_TBL + ']'
 
---EXEC sp_executesql @WK_SQL
+EXEC sp_executesql @WK_SQL
 
 END
 
 ---------------------------------------------------------
 END
+
 
 
 
