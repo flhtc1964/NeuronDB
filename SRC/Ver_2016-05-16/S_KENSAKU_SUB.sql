@@ -1,7 +1,7 @@
 USE [K-MEMO]
 GO
 
-/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/05/13 9:32:10 ******/
+/****** Object:  StoredProcedure [dbo].[S_KENSAKU_SUB]    Script Date: 2016/05/24 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -141,7 +141,17 @@ DECLARE @i int
 
 --//////////////////////////////////////////////////////////////////
 --ユーザ名を加工
+
+
+--◆重要◆
+--【ローカル】SQL Serverでは↓一時テーブルを使用すること
+--SET @WK_USER_NAME = '##' + REPLACE(LOWER ( system_user ),'\','_')
+
+--【Azure】では一時テーブルは使えないので'##' + は使わない
 SET @WK_USER_NAME = REPLACE(LOWER ( system_user ),'\','_')
+
+
+
 SET @WK_USER_NAME =  REPLACE(@WK_USER_NAME,'-','')
 
 --システム日時を加工
@@ -707,8 +717,10 @@ EXEC sp_executesql @WK_SQL
 
 END
 
+--【Azure】では一時テーブルは使えないので以下の２行を有効に
 SET @WK_SQL = 'drop table [dbo].[' + @WK_SAGYOU_TBL + ']'
 EXEC sp_executesql @WK_SQL
+
 
 END
 
