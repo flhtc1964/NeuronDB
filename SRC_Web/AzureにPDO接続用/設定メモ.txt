@@ -1,0 +1,60 @@
+Windows7 Pro （64bitコンピュータ）でインストールした時のメモ
+
+以下の32bit版をインストールする
+xampp-win32-5.6.24-0-VC11-installer　→　xampp-win32-5.6.24-0-VC11-installer.exeにリネームしWクリック
+
+C:\xampp\php\php.iniを開きタイムゾーンを以下の通り変更する
+date.timezone=Asia/Tokyo
+
+---
+xampp Control Panel v3.2.2 を開き、左上の　Apache と MySQL　の[×]をクリックして　Yes にし、緑チェックマーク
+＃自動起動
+
+
+---
+SQLServer用PHPダウンロード　Version 3.2を使用
+
+https://www.microsoft.com/en-us/download/details.aspx?id=20098
+
+これを使用した→　Version 3.2 supports PHP 5.6, 5.5, and 5.4
+
+Microsoft SQL Server PHP\SQLSRV32.EXEをインストール（Wクリック）
+解凍先を指定して展開C:\xampp\php\extへ上記展開ファイルで拡張子が.dllだけコピーする。
+
+---
+「Microsoft SQL Server 2012 Native Client」のx64パッケージをダウンロード
+
+Microsoft SQL Server Native Client_x64\sqlncli.msiをインストール
+
+---
+PHP.iniに設定するのは、【ts】の方を使用した
+
+C:\xampp\php\php.iniに以下を追加
+
+;;;;;;;;;;;;;;;;;;;
+; SQL Server Add: By SKojima 2016-09-07
+;;;;;;;;;;;;;;;;;;;
+extension=php_sqlsrv_56_ts.dll
+extension=php_pdo_sqlsrv_56_ts.dll
+
+;;;;;;;;;
+; By SKojima チェックエラー表示を無視する設定（任意で）
+;;;;;;;;;
+
+;error_reporting=E_ALL & ~E_DEPRECATED & ~E_STRICT
+
+error_reporting=E_ALL & ~E_NOTICE
+
+
+---
+
+（アパッチを）再起動
+
+---
+ODBC Driver 11のダウンロード　※13では動かなかったので
+https://www.microsoft.com/en-us/download/details.aspx?id=36434
+
+1033\amd64\msodbcsql.msi をダウンロードし　→　msodbcsql.msiをWクリックしてインストール
+
+以上
+---
