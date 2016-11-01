@@ -1,8 +1,8 @@
 ﻿<?php
 ////////////////////////////////////////////////////////////////////////////////
 
-//PDO接続のデータソース名　　　　　↓　　　　　　　　　　　　　　　　　　　↓
-$dsn          = "sqlsrv:server=●●●●●.database.windows.net;database=K-MEMO";
+//PDO接続のデータソース名　　　　　↓サーバ名　　　　　　　　　　　　　　↓データソース名
+$dsn          = "sqlsrv:server=●●●●●.database.windows.net;database=K-MEMO;Encrypt=True;TrustServerCertificate=False";
 
 //接続ユーザ名 　　　↓
 $user         = "●●●●●";

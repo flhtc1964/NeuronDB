@@ -56,5 +56,8 @@ https://www.microsoft.com/en-us/download/details.aspx?id=36434
 
 1033\amd64\msodbcsql.msi をダウンロードし　→　msodbcsql.msiをWクリックしてインストール
 
+
+common.phpに、データベース等を入力
+
 以上
 ---
