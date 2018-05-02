@@ -1,0 +1,286 @@
+'==================================
+' Please Rename. This faile Name.
+'
+' MK_K-MEMO.VBS.TXT ==> MK_K-MEMO.VBS
+'
+'MAKE K-MEMO DB
+' 2016-05-11 
+'By SKojima@kuhen.jp
+
+'==================================
+
+'新規DBログイン資格
+WK_TO_SERV = ""
+WK_TO_DB = "K-MEMO"
+WK_TO_UID = "sa"
+WK_TO_PW = ""
+
+
+'==================================
+'
+'==================================
+
+Dim D_01(1000)
+Dim D_02(1000)
+Dim D_03(1000)
+Dim D_04(1000)
+Dim D_05(1000)
+Dim D_06(1000)
+Dim D_07(1000)
+Dim D_08(1000)
+Dim D_09(1000)
+
+WScript.Echo "使用するデータベースで「ログインを許可する」がONになっていないと、ログインエラーになります"
+
+WK_TO_SERV = inputbox("サーバ名を入力してください","サーバ名の入力")
+
+WScript.Echo "今から　SQL Server【" & WK_TO_SERV & "】内に　データベース名【" & WK_TO_DB & "】に基本テーブル２個を自動作成します"
+
+
+WK_TO_PW = inputbox(WK_TO_SERV & "サーバの　sa　パスワードを入力してください","【 sa 】パスワードの入力")
+
+'==================================
+'ADOオブジェクトを作成します
+'==================================
+
+Set objADO = CreateObject("ADODB.Connection")
+
+
+
+'==================================
+'ADOを使いSQL ServerのDBを開きます
+'==================================
+
+	WScript.Echo "SQL Server【" & WK_TO_SERV & "】内に　データベース名【" & WK_TO_DB & "】を作成してから実行してください！"
+
+objADO.Open "Driver={SQL Server};" & _
+            "server=" & WK_TO_SERV & "; database=" & WK_TO_DB & "; uid=" & WK_TO_UID &"; pwd=" & WK_TO_PW & ";"
+
+
+'基本テーブル２個の存在チェック用
+WK_TBL_CHK_1 = 0
+WK_TBL_CHK_2 = 0
+
+
+            
+            
+    WK_SQL = "SELECT name FROM sysobjects WHERE xtype = 'U'"
+
+            Set objRS = objADO.Execute(WK_SQL)
+            
+    Do Until objRS.Eof = True
+    
+	strTABLE = objRS("name")
+	
+		if strTABLE <> "sysdiagrams" then
+		
+			if strTABLE = "Word_Entity_tbl" then
+				WK_TBL_CHK_1 = 1
+			end if
+		
+			if strTABLE = "Identify_Entity_tbl" then
+				WK_TBL_CHK_2 = 1
+			end if
+		
+	             'WScript.Echo strTABLE
+	             
+	    end if
+
+       '次のレコードを読む
+       objRS.MoveNext
+       
+    Loop
+    
+
+            
+'=====================================================
+'[Word_Entity_tbl]
+'無ければテーブル作成
+'=====================================================
+
+if WK_TBL_CHK_1 = 0 then
+
+
+WScript.Echo "[Word_Entity_tbl]を新規作成します！"
+
+WScript.Echo "この処理後【主キー】の値が　999（３桁）までシステム予約されますので次に「メッセージが出るまで」お待ちください！"
+
+
+WK_SQL = "CREATE TABLE [dbo].[Word_Entity_tbl] ("
+WK_SQL = WK_SQL & "[ID] [int] IDENTITY (0, 1) NOT NULL PRIMARY KEY ,"
+WK_SQL = WK_SQL & "[WORDS] [nvarchar] (2014) COLLATE Japanese_CI_AS NOT NULL ,"
+WK_SQL = WK_SQL & "[WK_ID] [int] NULL,"
+WK_SQL = WK_SQL & "[G_ID] [int]  NULL"
+WK_SQL = WK_SQL & ") ON [PRIMARY]"
+
+            
+            Set objRS = objADO.Execute(WK_SQL)
+            
+
+
+	WK_MK_WORDS = "なし"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "未来"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "現在"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "過去"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "識別名"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "人"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "法人"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "True"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "False"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "氏"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "氏ヨミ"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "名"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "名ヨミ"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "性別"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "男性"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "女性"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "男性（元女性）"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "女性（元男性）"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "備考"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+	WK_MK_WORDS = "生年月日（西暦）"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+
+	WK_MK_WORDS = "生年月日（和暦）"
+	WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+    Set objRS = objADO.Execute(WK_SQL)
+
+
+
+'レコード開始初期値
+WK_MK_I = 21
+
+'予約レコードMAX値（３ケタ）
+WK_MK_MAX = 999
+
+for j = WK_MK_I to WK_MK_MAX
+
+			WK_MK_WORDS = "システム予約" & right("000" & Cstr(j),3)
+			
+			
+			if j = 900 then
+				WK_MK_WORDS = "S_KENSAKU_MAIN"
+			end if
+
+			
+			if j = 901 then
+				WK_MK_WORDS = "S_KENSAKU_SUB"
+			end if
+			
+			if j = 902 then
+				WK_MK_WORDS = "S_KENSAKU_WIDE"
+			end if
+
+			WK_SQL = "INSERT INTO [dbo].[Word_Entity_tbl] ([WORDS]) VALUES(N'" & WK_MK_WORDS & "' ) "
+
+        'レコード新規追加
+        Set objRS = objADO.Execute(WK_SQL)
+            
+            
+next
+
+end if
+
+
+
+'-----------------------------------------------------------------------------------------
+
+
+
+
+'=====================================================
+'[Identify_Entity_tbl]
+'無ければテーブル作成
+'=====================================================
+
+if WK_TBL_CHK_2 = 0 then
+
+WScript.Echo "[Identify_Entity_tbl]を新規作成します！"
+            
+WK_SQL = "CREATE TABLE [dbo].[Identify_Entity_tbl] ("
+WK_SQL = WK_SQL & "[主キー] [int] IDENTITY (1, 1) NOT NULL PRIMARY KEY ,"
+WK_SQL = WK_SQL & "[識別ID] [int] NULL,"
+WK_SQL = WK_SQL & "[G_識別ID] [int] NULL,"
+WK_SQL = WK_SQL & "[T_ID] [int] NOT NULL,"
+WK_SQL = WK_SQL & "[ソート] [int] NOT NULL,"
+WK_SQL = WK_SQL & "[ユニット] [int] NOT NULL,"
+WK_SQL = WK_SQL & "[F_ID] [int] NOT NULL,"
+WK_SQL = WK_SQL & "[G_F_ID] [int] NULL,"
+WK_SQL = WK_SQL & "[F_ID_WORDS] [nvarchar] (2014) COLLATE Japanese_CI_AS NOT NULL ,"
+WK_SQL = WK_SQL & "[D_ID] [int] NULL,"
+WK_SQL = WK_SQL & "[G_D_ID] [int] NULL,"
+WK_SQL = WK_SQL & "[D_ID_WORDS] [nvarchar] (2014) COLLATE Japanese_CI_AS NULL ,"
+WK_SQL = WK_SQL & "[識別IDリンク先] [int] NULL,"
+WK_SQL = WK_SQL & "[G_識別IDリンク先] [int] NULL,"
+WK_SQL = WK_SQL & "[識別IDリンク先使用数] [int] NULL,"
+WK_SQL = WK_SQL & "[G_識別IDリンク先使用数] [int] NULL"
+WK_SQL = WK_SQL & ") ON [PRIMARY]"
+
+            
+            Set objRS = objADO.Execute(WK_SQL)
+            
+end if
+
+'-------------------------------------------------------------------------------------------------------
+WScript.Echo "処理終了"
+
+
+    

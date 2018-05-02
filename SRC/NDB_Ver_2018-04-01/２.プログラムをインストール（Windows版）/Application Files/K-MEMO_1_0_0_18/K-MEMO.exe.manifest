@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="K-MEMO.exe" version="1.0.0.18" publicKeyToken="dc32937f8942a022" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="K-MEMO2.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="K-MEMO" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="K-MEMO.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet version="1" class="System.Security.NamedPermissionSet" Name="LocalIntranet" Description="Default rights given to applications on the local intranet" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC マニフェスト オプション
+             Windows のユーザー アカウント制御のレベルを変更するには、
+             requestedExecutionLevel ノードを以下のいずれかで置換します。
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            requestedExecutionLevel 要素を指定すると、ファイルおよびレジストリの仮想化が無効にされます。
+            アプリケーションが下位互換性を保つためにこの仮想化を要求する場合、この要素を
+            削除します。
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K-MEMO.exe" size="103896">
+      <assemblyIdentity name="K-MEMO" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>VW6Q6kN+ugI+oSQIAoO3GAKQgGKNc4sNWGDVe0ZEcHA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="K-MEMO.exe.config" size="167">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>c5A1E0VFdjRrCoH30IyWh/L/VhgQ3hO9i/F+MAROEiY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="K-MEMO.ico" size="15086">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ZRcjQbcbU0riqfxaAlo5wWxzFYZVK69750Go6/Hae7Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="K-MEMO2.ico" size="15086">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kGPGk3dqzI6M5xFi1KIduDfBU/zkCf2BA0PhMcztMJg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- このアプリケーションがテストされ、協働するようテストされた Windows バージョンの
+           一覧。適切な要素をコメント解除すると、最も互換性のある環境を Windows が
+           自動的に選択します。-->
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+<publisherIdentity name="CN=CF-S10-KUHEN\SKojima" issuerKeyHash="e7fc8f9320260897b1765d663868e0f66ea90b81" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>V7Ux6eC649eRVQZ7+BjUafxRSDoOPusLoCMjACq9wnE=</DigestValue></Reference></SignedInfo><SignatureValue>reznxn/yDFiZ0apnpQKt72InSzf1NYCAbAcfaxWgifhZZ1FWHDtHkWhlGEq1dMjbC/ZPMGHNEBnkMEAZdIfWjswxYo7yPRBTKT4xupeMdBsJy/JoVo+G7zp5ZX9GAA7pjR0voj5/qC87pqvSyOvvlUMrvCZb97i6Wqlv4if87xE=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>7/YzoqidHp48QPSP3jX5FrJuFkmjKxC/0i+mSPXWXnzs4jUZfcftrFSqYAquj0uF4xrV3VjoSX8OSSMSemXE88+/F8Qy+feLPBbqE75pyT/re90Di8QPGgMyT8W3J5joWkmpF4QND1Fm6xywlQXevZCgYHCCkdWjziQHP9M2osE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="71c2bd2a002323a00beb3e0e3a4851fc69d418f87b065591d7e3bae0e931b557" Description="" Url=""><as:assemblyIdentity name="K-MEMO.exe" version="1.0.0.18" publicKeyToken="dc32937f8942a022" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=CF-S10-KUHEN\SKojima</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>EeyOT0aSe9WsI73053G5dwkKrn/lx1dz7mUOcwvPz6o=</DigestValue></Reference></SignedInfo><SignatureValue>uWQxej3eYoqWe6mlFY5etzvIk+VFgwd6crZXu28xOYph7Tl/Gr0KDYQs63ce19S7zt0otWjb6x0iYwZH+ygLenKAiA+G2mVef+F/hBmU1BfzmdPfy5HEotYohCAEw5cM7ZEOwi6fs/NJceV3ewjbzy77CaF9Mxc0NtmxvkW1rgA=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>7/YzoqidHp48QPSP3jX5FrJuFkmjKxC/0i+mSPXWXnzs4jUZfcftrFSqYAquj0uF4xrV3VjoSX8OSSMSemXE88+/F8Qy+feLPBbqE75pyT/re90Di8QPGgMyT8W3J5joWkmpF4QND1Fm6xywlQXevZCgYHCCkdWjziQHP9M2osE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB6TCCAVKgAwIBAgIQe8wsPKAkWJBP5ixLVbQgUDANBgkqhkiG9w0BAQsFADAzMTEwLwYDVQQDHigAQwBGAC0AUwAxADAALQBLAFUASABFAE4AXABTAEsAbwBqAGkAbQBhMB4XDTE4MDQwMjEzMzMwN1oXDTE5MDQwMjE5MzMwN1owMzExMC8GA1UEAx4oAEMARgAtAFMAMQAwAC0ASwBVAEgARQBOAFwAUwBLAG8AagBpAG0AYTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA7/YzoqidHp48QPSP3jX5FrJuFkmjKxC/0i+mSPXWXnzs4jUZfcftrFSqYAquj0uF4xrV3VjoSX8OSSMSemXE88+/F8Qy+feLPBbqE75pyT/re90Di8QPGgMyT8W3J5joWkmpF4QND1Fm6xywlQXevZCgYHCCkdWjziQHP9M2osECAwEAATANBgkqhkiG9w0BAQsFAAOBgQAUP5PScomX3O4uk3C+8n4xMsj24rkgCMShBlfISQUC97GeSgp3FRueDr934qseqO+u55xy8TT9WXJWrH9mB7GL2hbPE4IzS05kZTs1LldLxbKO6WbcoTBuKhtZ3iEnkHmaGHR/FI/2ZDb3E+PXQFxEL/B4YSuq5xfJSbuhqyN+CQ==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
